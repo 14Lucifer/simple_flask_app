@@ -12,8 +12,8 @@ RUN apt-get update
 RUN apt-get install python3 -y
 
 # Make port 9000 available to the world outside this container
-EXPOSE 9000
+EXPOSE 8080
 
 # Run app.py when the container launches
-CMD ["python3", "-m","http.server","9000"]
+CMD ["python3", "-m","http.server","8080"]
 

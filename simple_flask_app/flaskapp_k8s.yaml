@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flaskapp
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: flaskapp
+    spec:
+      containers:
+      - image: swr.me-east-1.myhuaweicloud.com/luke-test/flaskapp:v3.0  # To be replaced with actual image and make sure the image is public.
+        imagePullPolicy: Always
+        name: flaskapp
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: default-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: flaskapp
+  name: flaskapp-nodeport
+spec:
+  ports:
+  - name: service
+    nodePort: 30080  
+    port: 8080
+    protocol: TCP       
+    targetPort: 8080      
+  selector:             
+    app: flaskapp
+  type: NodePort        
+
